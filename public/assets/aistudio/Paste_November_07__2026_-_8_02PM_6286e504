@@ -1,0 +1,878 @@
+# PROJECT: DeShare — Complete Decentralized Secure File Sharing Platform
+
+## ROLE AND RESPONSIBILITY
+
+Act as an expert software architect, senior full-stack developer, blockchain engineer, cryptography engineer, cybersecurity engineer, UI/UX designer, DevOps engineer, and QA automation engineer.
+
+Your task is to build, complete, integrate, and validate a fully functional end-to-end decentralized secure file-sharing web application named **DeShare** using my existing repository as the foundation.
+
+This is not a request to create only a frontend, dashboard, prototype, or static demonstration.
+
+I need a complete working application in which the frontend, backend, database, blockchain, IPFS storage, encryption, Proxy Re-Encryption, group access management, authentication, security monitoring, and owner dashboard communicate correctly.
+
+You must inspect my existing work, reuse working implementations, identify incomplete functionality, fix defects, and complete the application.
+
+Do not unnecessarily rewrite working modules.
+
+---
+
+# 1. EXISTING PROJECT REPOSITORY
+
+GitHub repository:
+
+https://github.com/vinodvinod24925/decentalised-_file_sharing_version_4
+
+Existing development branch:
+
+`codex/deshare-audit`
+
+Local project directory, if already available:
+
+`C:\Users\Chandini S\OneDrive\Documents\ChatGPT\deshare`
+
+First inspect the existing repository and working directory.
+
+### Repository instructions
+
+1. Inspect the complete folder structure.
+2. Read the README and existing documentation.
+3. Inspect frontend and backend implementations.
+4. Inspect smart contracts and deployment scripts.
+5. Inspect encryption and PRE implementations.
+6. Inspect database schemas and API endpoints.
+7. Inspect Docker configuration and environment examples.
+8. Inspect existing tests and recent Git history.
+9. Identify completed, incomplete, broken, and missing features.
+10. Preserve existing working functionality.
+
+Do not blindly clone over or replace the existing project.
+
+Do not discard local modifications.
+
+Do not run destructive Git commands.
+
+Do not expose, print, or commit `.env` secrets, API keys, passwords, wallet private keys, or OAuth credentials.
+
+Do not automatically push, merge, or deploy changes.
+
+---
+
+# 2. PROJECT OBJECTIVE
+
+Build a decentralized secure file-sharing system that allows users to:
+
+- Register and authenticate.
+- Upload files securely.
+- Encrypt files locally using AES-256-GCM.
+- Store encrypted files on IPFS.
+- Generate and manage IPFS CIDs.
+- Share files with individual users or groups.
+- Manage group membership and permissions.
+- Use Proxy Re-Encryption for controlled access delegation.
+- Set access expiration.
+- Revoke access.
+- Retrieve and decrypt authorized files.
+- Maintain blockchain-backed access records and auditability.
+- Detect unauthorized access attempts.
+- Simulate a hacker attack safely.
+- Generate a new encrypted file version and CID as a security response.
+- Notify the original file owner.
+- Display attack history and security events in the owner dashboard.
+
+The application must demonstrate secure access throughout the complete file lifecycle.
+
+---
+
+# 3. REQUIRED TECHNOLOGY STACK
+
+First inspect the existing project and retain compatible technologies wherever possible.
+
+Expected architecture:
+
+| Layer | Technology |
+|---|---|
+| Frontend | React |
+| Styling | Existing styling system or Tailwind CSS |
+| Backend | Python FastAPI |
+| Database | MongoDB |
+| Blockchain | Solidity + Hardhat |
+| Web3 integration | Existing Web3/Ethers implementation |
+| Decentralized storage | IPFS using Kubo |
+| File encryption | AES-256-GCM |
+| Access delegation | Proxy Re-Encryption using existing PRE/Umbral implementation |
+| Authentication | Google OAuth + supported guest access |
+| Wallet | Existing wallet provisioning and connection |
+| Deployment | Docker Compose + local development environment |
+
+Do not introduce unnecessary frameworks or replace the existing cryptographic implementation without a technical reason.
+
+Keep frontend, backend, blockchain, database, and IPFS configurations consistent.
+
+---
+
+# 4. USER AUTHENTICATION AND ACCOUNT MANAGEMENT
+
+Implement and verify:
+
+- Google sign-in.
+- User session management.
+- Logout.
+- Guest access, if supported by the existing design.
+- User profile and identity management.
+- Wallet provisioning.
+- Wallet connection and address display.
+- Authentication persistence.
+- Protected routes.
+- Backend token validation.
+- Proper unauthorized and expired-session handling.
+
+Requirements:
+
+1. Authenticated users must have their own file space.
+2. File owners must be identifiable.
+3. Users must not access another user's private files without permission.
+4. Guest access must not bypass authorization.
+5. Never expose private keys in frontend logs or backend responses.
+
+Use real OAuth configuration where available. Provide clear setup instructions if external credentials are required.
+
+Do not fabricate successful Google OAuth responses.
+
+---
+
+# 5. FILE UPLOAD AND AES-256-GCM ENCRYPTION
+
+Implement a complete upload workflow.
+
+### Upload process
+
+1. User selects a file.
+2. Frontend validates file type and size.
+3. File is securely processed.
+4. A cryptographically secure random AES-256 key is generated.
+5. File is encrypted using AES-256-GCM.
+6. A unique nonce and authentication tag are handled correctly.
+7. Only encrypted content is uploaded to IPFS.
+8. IPFS returns the actual CID.
+9. File metadata is saved in MongoDB.
+10. Ownership and relevant access metadata are recorded.
+11. The frontend displays the uploaded file and its CID.
+
+### Requirements
+
+- Never upload plaintext when the design requires encrypted storage.
+- Never reuse GCM nonces with the same key.
+- Authenticate encrypted content during decryption.
+- Validate file integrity.
+- Handle large files and failures safely.
+- Do not store encryption keys as ordinary plaintext metadata.
+- Provide appropriate error messages.
+
+---
+
+# 6. IPFS STORAGE AND CID MANAGEMENT
+
+Implement actual local Kubo IPFS integration.
+
+Features:
+
+- Add encrypted files to IPFS.
+- Obtain actual CIDs.
+- Retrieve encrypted content using CIDs.
+- Validate retrieved content.
+- Handle missing content and unavailable nodes.
+- Store CID and version metadata.
+- Maintain historical file versions.
+- Display current CID and previous CIDs.
+- Verify that the CID corresponds to the actual stored content.
+
+Important:
+
+IPFS uses content addressing. A CID identifies content and cannot be edited in place.
+
+Never generate fake CIDs or pretend that an existing CID changes automatically.
+
+A new CID must be obtained by uploading new encrypted content.
+
+---
+
+# 7. BLOCKCHAIN AND SMART CONTRACTS
+
+Inspect the existing Solidity contracts before making modifications.
+
+Implement and verify the existing required functionality:
+
+- File metadata registration.
+- Owner identification.
+- Access grant records.
+- Group permissions, where supported.
+- Delegation tracking.
+- Access expiry.
+- Revocation.
+- Audit events.
+- Transaction verification.
+- File-version references, if supported by the architecture.
+
+### Blockchain requirements
+
+- Use local Hardhat network by default.
+- Use test accounts only.
+- No mainnet deployment.
+- No real cryptocurrency.
+- Verify the correct chain ID.
+- Verify contract addresses and ABI files.
+- Handle reverted transactions and custom errors.
+- Wait for transaction receipts where required.
+- Do not report success before transaction confirmation.
+- Avoid duplicate active grants.
+- Preserve the existing owner-managed group architecture.
+
+Use contract-enforced expiration through `block.timestamp` where the existing design specifies it.
+
+Maximum delegation depth should remain 3 unless the existing implementation documents a different enforced value.
+
+Do not introduce an external scheduler as a replacement for contract-enforced expiration.
+
+---
+
+# 8. PROXY RE-ENCRYPTION
+
+This is a core security component.
+
+Use the actual existing PRE/Umbral implementation.
+
+Required functionality:
+
+1. Generate or manage the necessary cryptographic keys.
+2. Generate re-encryption material for authorized delegation.
+3. Allow an owner to grant file access to a recipient.
+4. Allow authorized recipients to obtain transformed encrypted content.
+5. Verify recipient identity and authorization.
+6. Decrypt only with the appropriate recipient key.
+7. Support controlled multi-hop delegation within the configured depth.
+8. Support expiry.
+9. Support revocation.
+10. Prevent unauthorized users from obtaining usable key material.
+
+Verify:
+
+- Correct key serialization.
+- Correct capsule handling.
+- Correct recipient identity.
+- Correct PRE transformation.
+- Correct decryption.
+- Correct error handling for invalid keys and capsules.
+
+Never replace PRE with a hardcoded success response or a simple shared plaintext key.
+
+---
+
+# 9. GROUP MANAGEMENT AND FILE SHARING
+
+Implement complete group functionality.
+
+### Group operations
+
+- Create a group.
+- Display owned groups.
+- View group details.
+- Add members using supported identity verification.
+- Remove members.
+- Manage owner and group-admin roles.
+- Display authorized members.
+- Share files with groups.
+- Revoke file access.
+- Track membership and access changes.
+
+### Authorization requirements
+
+- Only the owner or authorized administrators can perform permitted group-management actions.
+- Only authorized members can retrieve protected files.
+- Membership must not automatically bypass file-level permissions.
+- Duplicate grants must be handled safely.
+- Database and blockchain state must remain consistent.
+- Unauthorized users must receive proper access-denied responses.
+
+Retain the existing Gmail-based membership workflow where implemented.
+
+---
+
+# 10. ACCESS EXPIRY AND REVOCATION
+
+Implement and verify:
+
+- Grant access with a specified expiry.
+- Allow access before expiry.
+- Deny access after expiry.
+- Revoke access manually.
+- Deny access after revocation.
+- Record all relevant operations.
+- Handle boundary timestamps.
+- Enforce authorization in the backend and smart contract where applicable.
+
+Do not rely only on frontend visibility or hidden buttons.
+
+Test the actual authorization path.
+
+---
+
+# 11. SPECIAL REQUIREMENT: SIMULATED HACKER ATTACK
+
+This is a mandatory faculty demonstration feature.
+
+Create a complete **Security Attack Simulator** in the owner dashboard.
+
+The simulator must demonstrate a controlled unauthorized access attempt against a file shared with a group.
+
+### Attack simulation workflow
+
+Step 1: Owner uploads and encrypts a file.
+
+Step 2: Owner shares the file with an authorized group.
+
+Step 3: Owner opens the Security Attack Simulator.
+
+Step 4: Owner selects a group-shared test file.
+
+Step 5: A dedicated simulated attacker identity, such as `simulated_hacker`, attempts to request access.
+
+Step 6: The real backend authorization system rejects the request.
+
+Step 7: An unauthorized access event is recorded.
+
+Step 8: The owner receives a security alert.
+
+Step 9: The security response initiates file-version and encryption-key rotation.
+
+Step 10: The original plaintext is re-encrypted with a new cryptographic key.
+
+Step 11: The new encrypted content is uploaded to IPFS.
+
+Step 12: IPFS returns a new actual CID.
+
+Step 13: The new file version is recorded.
+
+Step 14: Authorized recipient access material is updated using the existing PRE workflow.
+
+Step 15: The simulated attacker remains unauthorized and unable to decrypt the new version.
+
+Step 16: The owner can inspect the complete attack history and response.
+
+### Security requirements
+
+- Use a local simulated attacker only.
+- Never add the attacker to the authorized group.
+- Never expose AES keys, PRE private keys, or re-encryption secrets.
+- Do not bypass the actual authorization logic.
+- Record the actual access-denied response.
+- Preserve the original CID and file history.
+- Do not delete old IPFS objects.
+- Do not claim previously downloaded plaintext can be remotely erased.
+- Do not claim an IPFS CID changes merely because an attack occurred.
+
+### CID rotation
+
+CID rotation must create a genuinely new encrypted version.
+
+The workflow must:
+
+1. Preserve the original CID.
+2. Generate a fresh secure encryption key.
+3. Re-encrypt the original plaintext.
+4. Upload the new encrypted content.
+5. Obtain the actual new IPFS CID.
+6. Update the current version reference.
+7. Update authorized recipient access material.
+8. Enforce the new access policy.
+9. Preserve historical metadata and audit records.
+
+If rotation or PRE re-provisioning fails, display the failure. Never mark the entire response as successful when only part of it completed.
+
+The owner alert must still be created when the unauthorized attempt is detected, even if the subsequent rotation fails.
+
+---
+
+# 12. OWNER DASHBOARD
+
+Build a professional, responsive owner dashboard using real backend data.
+
+Include:
+
+### Dashboard overview
+
+- Total uploaded files.
+- Total shared files.
+- Number of groups.
+- Authorized members.
+- Active access grants.
+- Expired or revoked grants.
+- Security events.
+- Unread security alerts.
+
+### File management
+
+- Upload files.
+- View file details.
+- Display file owner.
+- Display current CID.
+- Display file version.
+- Display group-sharing information.
+- Manage permissions.
+- View access history.
+
+### Security center
+
+- Security Attack Simulator.
+- Recent unauthorized attempts.
+- Attack event history.
+- Encryption rotation status.
+- Old and new CID comparison.
+- Security alert history.
+- Attack timeline.
+- Event IDs and timestamps.
+
+### Alert example
+
+SECURITY ALERT: Unauthorized File Access Attempt
+
+- File: Actual file name
+- Group: Actual group
+- Actor: simulated_hacker
+- Access status: DENIED
+- Original CID: Actual original CID
+- New CID: Actual new CID, if rotation succeeds
+- Event ID: Actual event ID
+- Timestamp: Actual timestamp
+- Response status: Actual response status
+
+Only the file owner and authorized administrators should be able to see sensitive alert information.
+
+---
+
+# 13. AUTHORIZED USER DASHBOARD
+
+Create a separate experience for normal authorized users.
+
+Include:
+
+- Profile.
+- Wallet information.
+- Groups.
+- Shared files.
+- File owner details.
+- File version.
+- Expiry information.
+- Download and decrypt actions.
+- Delegated access.
+- Revoked or expired access messages.
+- Relevant notifications.
+
+The user must only see files and groups they are authorized to access.
+
+---
+
+# 14. DATABASE DESIGN
+
+Inspect the existing MongoDB schemas and implement consistent persistence.
+
+Relevant entities may include:
+
+- Users
+- Wallets
+- Groups
+- Group memberships
+- Files
+- File versions
+- File access grants
+- Delegation records
+- Security events
+- Owner alerts
+- Transaction records
+
+Requirements:
+
+- Use appropriate unique identifiers.
+- Validate incoming data.
+- Enforce ownership.
+- Prevent duplicate records.
+- Handle concurrent requests.
+- Preserve historical audit records.
+- Use appropriate indexes.
+- Handle partial failures across IPFS, MongoDB, and blockchain.
+
+Do not claim cross-system atomicity where it does not exist. Implement safe recovery, idempotency, and explicit operation states.
+
+---
+
+# 15. FRONTEND DESIGN AND USER EXPERIENCE
+
+Create a modern, professional security-focused application.
+
+The UI must include:
+
+- Login page.
+- Registration or supported authentication screen.
+- Owner dashboard.
+- User dashboard.
+- File upload page.
+- File management page.
+- Groups page.
+- Group details page.
+- Sharing and permissions page.
+- Delegation page.
+- Security center.
+- Attack simulator.
+- Alert details page.
+- Profile and wallet settings.
+
+### Design expectations
+
+- Clean and professional layout.
+- Consistent colors and typography.
+- Responsive desktop and mobile layouts.
+- Sidebar navigation.
+- Proper forms and validation.
+- Loading indicators.
+- Success and failure notifications.
+- Empty states.
+- Error messages.
+- Confirmation before destructive actions.
+- Clear security status indicators.
+
+All controls must be connected to real functionality.
+
+Do not create buttons that do nothing.
+
+Do not use hardcoded dashboard statistics or fake transactions.
+
+Do not use placeholder data to represent completed security operations.
+
+---
+
+# 16. BACKEND API INTEGRATION
+
+Review every existing API endpoint.
+
+Ensure:
+
+- Correct request schemas.
+- Correct response schemas.
+- Authentication middleware.
+- Authorization checks.
+- Input validation.
+- Error handling.
+- Database integration.
+- IPFS integration.
+- Blockchain integration.
+- Encryption and PRE integration.
+- Audit-event creation.
+- Owner alert creation.
+
+Frontend and backend contracts must match exactly.
+
+Every frontend action must call the correct backend operation and display the actual response.
+
+Add appropriate API documentation through FastAPI where available.
+
+---
+
+# 17. ERROR HANDLING AND SECURITY
+
+Implement safe handling for:
+
+- Invalid authentication.
+- Unauthorized access.
+- Expired access.
+- Revoked permissions.
+- Incorrect encryption keys.
+- Modified encrypted data.
+- Invalid CIDs.
+- IPFS downtime.
+- MongoDB downtime.
+- Blockchain RPC downtime.
+- Failed smart-contract transactions.
+- Duplicate requests.
+- PRE transformation errors.
+- Failed recipient updates.
+- Incomplete file rotation.
+- Network interruption.
+- Large file uploads.
+
+Requirements:
+
+- Never expose internal secrets in error responses.
+- Never return private cryptographic keys.
+- Never silently suppress failures.
+- Never bypass authorization.
+- Never treat a partially completed workflow as successful.
+- Keep audit records for security-sensitive operations.
+
+---
+
+# 18. DEPLOYMENT AND ENVIRONMENT CONFIGURATION
+
+Default deployment:
+
+- Local development only.
+- Hardhat local network.
+- Local Kubo IPFS.
+- Local MongoDB or existing configured database.
+- FastAPI backend.
+- React frontend.
+- Docker Compose where supported.
+
+Preserve the existing Google sign-in, wallet, Guest, AES/IPFS/PRE flows.
+
+Keep external integrations such as Base Sepolia and Pinata optional until the necessary credentials and configuration are available.
+
+Provide:
+
+- `.env.example` files.
+- Dependency installation instructions.
+- Docker configuration.
+- Startup scripts where useful.
+- Database initialization instructions.
+- Contract compilation and deployment instructions.
+- IPFS startup instructions.
+- Troubleshooting documentation.
+
+Never overwrite actual secret files.
+
+---
+
+# 19. AUTOMATED TESTING
+
+Create a complete automated testing strategy.
+
+### Backend tests
+
+Test authentication, users, groups, sharing, permissions, file handling, database persistence, alerts, and audit events.
+
+### Frontend tests
+
+Test components, routing, forms, authentication states, file upload, group operations, dashboards, and alerts.
+
+### Smart-contract tests
+
+Test access grants, duplicate grants, expiry, revocation, permissions, and audit events.
+
+### Cryptographic tests
+
+Test encryption, decryption, tampering, invalid keys, PRE delegation, recipient access, and unauthorized access.
+
+### IPFS tests
+
+Test upload, retrieval, CID validation, content integrity, and new file versions.
+
+### End-to-end tests
+
+Run these complete scenarios:
+
+**Test A: Normal file sharing**
+
+Owner uploads → encryption → IPFS → CID → group sharing → recipient retrieves → recipient decrypts → file integrity matches.
+
+**Test B: Unauthorized access**
+
+Hacker attempts access → authorization rejects → audit event recorded → owner alert displayed.
+
+**Test C: Security response**
+
+Attack detected → new key generated → file re-encrypted → new IPFS upload → new CID obtained → recipient access updated → hacker denied.
+
+**Test D: Revocation**
+
+Owner revokes access → recipient is denied future access through the protected application.
+
+**Test E: Expiration**
+
+Recipient can access before expiry → recipient is denied after expiry.
+
+**Test F: Failure handling**
+
+Simulate database, IPFS, blockchain, and recipient-update failures. Verify that the system records the failure and does not claim success incorrectly.
+
+Use real local infrastructure for integration testing wherever practical.
+
+Mocks may be used for isolated unit tests, but must never be presented as proof of end-to-end functionality.
+
+---
+
+# 20. DEVELOPMENT EXECUTION PLAN
+
+Work in the following order.
+
+### Phase 1: Existing repository audit
+
+Inspect everything and produce a feature inventory.
+
+### Phase 2: Architecture and integration audit
+
+Identify missing connections, mismatched APIs, configuration problems, and incomplete workflows.
+
+### Phase 3: Backend completion
+
+Complete APIs, database operations, authentication, authorization, cryptographic integration, IPFS, blockchain, and security events.
+
+### Phase 4: Frontend completion
+
+Connect all pages and controls to real backend functionality.
+
+### Phase 5: Smart-contract and IPFS verification
+
+Compile, test, and verify local integration.
+
+### Phase 6: Security workflow
+
+Complete the simulated hacker attack, CID rotation, PRE update, and owner alerts.
+
+### Phase 7: Full end-to-end testing
+
+Run the complete application and verify all workflows.
+
+### Phase 8: Fix and retest
+
+Fix errors by root cause and rerun all affected tests.
+
+### Phase 9: Documentation
+
+Produce accurate setup, startup, testing, architecture, and demonstration documentation.
+
+Do not stop after generating a plan. Execute the work in the repository.
+
+---
+
+# 21. STRICT DEFINITION OF DONE
+
+The project is complete only when:
+
+1. Frontend starts successfully.
+2. Backend starts successfully.
+3. Database connectivity is verified.
+4. IPFS connectivity is verified.
+5. Blockchain connectivity is verified.
+6. Smart contracts compile and tests pass.
+7. User authentication works to the extent configured.
+8. File upload and AES encryption work.
+9. Encrypted content is stored in IPFS.
+10. CIDs are correctly generated and retrieved.
+11. File decryption works for authorized users.
+12. Group creation and membership work.
+13. File sharing works.
+14. Unauthorized users are denied.
+15. PRE delegation works.
+16. Expiry and revocation work.
+17. Audit records are persisted.
+18. Simulated hacker attack works through the actual authorization path.
+19. Security alerts reach the file owner.
+20. CID rotation creates a real new encrypted IPFS object.
+21. Authorized recipients can access the updated version.
+22. Unauthorized simulated hackers cannot decrypt the updated version.
+23. The dashboards show actual backend data.
+24. All important buttons and actions work.
+25. Automated tests pass or remaining failures are clearly documented.
+
+A successful frontend build alone is not sufficient.
+
+A successful backend startup alone is not sufficient.
+
+A UI mockup is not sufficient.
+
+---
+
+# 22. FINAL PROJECT REPORT
+
+At the end, produce a complete report.
+
+Include:
+
+- Existing functionality discovered.
+- Functionality reused.
+- Missing functionality implemented.
+- Bugs discovered.
+- Root causes.
+- Files modified.
+- Database changes.
+- API changes.
+- Smart-contract changes.
+- Frontend changes.
+- Security improvements.
+- Tests performed.
+- Exact test results.
+- Application startup commands.
+- Frontend URL.
+- Backend URL.
+- API documentation URL.
+- Remaining blockers.
+- Required external credentials.
+- Instructions for demonstrating the project to my faculty mentor.
+
+Use this table:
+
+| Module | Implementation status | Test result | Evidence |
+|---|---|---|---|
+| Authentication | | | |
+| User management | | | |
+| File upload | | | |
+| AES encryption | | | |
+| IPFS storage | | | |
+| CID management | | | |
+| Blockchain | | | |
+| Group management | | | |
+| File sharing | | | |
+| PRE | | | |
+| Delegation | | | |
+| Expiry | | | |
+| Revocation | | | |
+| Attack simulator | | | |
+| CID rotation | | | |
+| Owner alerts | | | |
+| Audit trail | | | |
+| Frontend | | | |
+| Backend | | | |
+| End-to-end integration | | | |
+
+Use only these statuses:
+
+- PASS
+- FAIL
+- BLOCKED
+- NOT IMPLEMENTED
+
+Do not report a feature as PASS without actual verification.
+
+---
+
+# FINAL COMMAND
+
+Build the complete DeShare application using the existing repository and previous development work.
+
+Preserve existing working implementations.
+
+Complete missing features.
+
+Connect all frontend and backend modules.
+
+Implement the complete decentralized secure file-sharing workflow.
+
+Implement the faculty-required simulated hacker attack, actual encryption-key rotation, new IPFS CID generation, and owner security alert.
+
+Run the application locally.
+
+Test every major functionality.
+
+Fix all reproducible errors.
+
+Repeat testing after fixes.
+
+Keep the application runnable at the end.
+
+Do not stop at planning, code generation, or UI creation.
+
+Do not invent test results.
+
+Do not silently skip unfinished features.
+
+Do not commit, push, merge, or deploy without my explicit permission.
+
+The final deliverable must be a functioning, integrated, testable DeShare application—not just a collection of source files.

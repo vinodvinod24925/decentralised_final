@@ -1,0 +1,6 @@
+{
+  "name": "DeShare - Decentralized Secure File Sharing",
+  "description": "Decentralized secure file sharing platform featuring AES-256-GCM encryption, IPFS storage, Proxy Re-Encryption, smart-contract access control, and automated security attack simulation with CID rotation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
